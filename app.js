@@ -42,9 +42,9 @@ require('./routes/index.js')(app, passport);
 
 
 // var routes = require('./routes/index')(app, passport);
-var users = require('./routes/users');
+var user = require('./routes/user');
 // app.use('/', routes);
-app.use('/users', users);
+app.use('/user', user);
 
 
 // catch 404 and forward to error handler

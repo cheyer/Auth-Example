@@ -1,67 +1,47 @@
 //var express = require('express');
 //var router = express.Router();
-
+var auth = require('./authentication');
 module.exports = function(app, passport) {
 
 /* GET home page. */
-app.get('/', function(req, res, next) {
-  res.render('index', { title: 'Node Passport Authentication' });
+app.get('/', auth.isLoggedIn, function(req, res, next) {
+  res.render('index', {
+    title: 'Node Passport Authentication',
+    user : req.user
+  });
 });
 
 /* GET login page */
-app.get('/login', isLoggedOut, function(req, res) {
+app.get('/login', auth.isLoggedOut, function(req, res) {
   res.render('login', {message: req.flash('loginMessage')});
 });
 
 /* POST login form */
 app.post('/login', passport.authenticate('local-login',{
-  successRedirect: '/profile',
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 }));
 
 /* GET signup page */
-app.get('/signup', isLoggedOut, function(req, res) {
+app.get('/signup', auth.isLoggedOut, function(req, res) {
   res.render('signup', {message: req.flash('signupMessage')});
 });
 
 /* POST signup form */
 app.post('/signup', passport.authenticate('local-signup', {
-  successRedirect : '/profile',
+  successRedirect : '/',
   failureRedirect : '/signup',
   failureFlash : true
 }));
 
-/* GET profile page */
-// we will want this protected so you have to be logged in to visit
-// we will use route middleware to verify this (the isLoggedIn function)
-app.get('/profile', isLoggedIn, function(req, res) {
-  res.render('profile',{
-    user : req.user
-  });
-});
-
 /* GET logout */
 app.get('/logout', function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.redirect('/login');
 });
 };
 
-function isLoggedIn(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }else{
-    res.redirect('/');
-  }
-}
 
-function isLoggedOut(req, res, next){
-  if(!req.isAuthenticated()){
-    return next();
-  }else{
-    res.redirect('/profile');
-  }
-}
 
 //module.exports = router;

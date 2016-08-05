@@ -5,9 +5,10 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Login or Register with:</p>
-    <a href="/login">Login</a>
-    <a href="/signup">Signup</a>
+    <h1>Hi <%= user.name%></h1>
+    <p>Now you're logged in!</p>
+    <p>You can look up your profile <a href="/user/profile">here</a>.</p>
+    <hr>
+    <p>To logout click <a href="/logout">here</a>.</p>
   </body>
 </html>
